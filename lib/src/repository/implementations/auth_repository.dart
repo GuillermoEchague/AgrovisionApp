@@ -1,5 +1,6 @@
 import 'package:agrovision/src/repository/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepository extends AuthRepositoryBase {
   final _firebaseAuth = FirebaseAuth.instance;
@@ -19,6 +20,22 @@ class AuthRepository extends AuthRepositoryBase {
 
   @override
   Future<void> signOut() async {
+    await GoogleSignIn().signOut();
     await _firebaseAuth.signOut();
+  }
+
+  @override
+  Future<AuthUser?> signInWithGoogle() async {
+    final googleUser = await GoogleSignIn().signIn();
+    final googleAuth = await googleUser.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final authResult =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    return _userFromFirebase(authResult.user);
   }
 }

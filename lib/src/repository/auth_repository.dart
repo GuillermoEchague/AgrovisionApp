@@ -13,6 +13,7 @@ class AuthUser extends Equatable {
 abstract class AuthRepositoryBase {
   Stream<AuthUser?> get onAuthStateChanged;
   Future<AuthUser?> signInAnonymously();
+  Future<AuthUser?> signInWithGoogle();
 
   Future<void> signOut();
 }

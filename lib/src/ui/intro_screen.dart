@@ -1,4 +1,5 @@
 import 'package:agrovision/src/bloc/auth_cubit.dart';
+import 'package:agrovision/src/navigation/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -139,9 +140,7 @@ class _LoginPage extends StatelessWidget {
                   imagePath: 'assets/icon_facebook.png',
                   color: Colors.blueAccent,
                   textColor: Colors.white,
-                  onTap: () {
-                    //TODO
-                  },
+                  onTap: () => context.read<AuthCubit>().signInWithFacebook(),
                 ),
                 SizedBox(
                   height: 8,
@@ -152,7 +151,8 @@ class _LoginPage extends StatelessWidget {
                   color: Colors.red,
                   textColor: Colors.white,
                   onTap: () {
-                    //TODO
+                    context.read<AuthCubit>().reset();
+                    Navigator.pushNamed(context, Routes.signInEmail);
                   },
                 ),
                 SizedBox(
@@ -169,9 +169,11 @@ class _LoginPage extends StatelessWidget {
                   height: 50,
                 ),
                 OutlinedButton(
-                  child: Text('Create account'),
-                  onPressed: () {},
-                )
+                    child: Text('Create account'),
+                    onPressed: () {
+                      context.read<AuthCubit>().reset();
+                      Navigator.pushNamed(context, Routes.createAccount);
+                    })
               ],
             ),
           ),

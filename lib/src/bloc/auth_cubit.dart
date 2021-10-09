@@ -15,6 +15,8 @@ class AuthCubit extends Cubit<AuthState> {
         _authRepository.onAuthStateChanged.listen(_authStateChanged);
   }
 
+  Future<void> reset() async => emit(AuthInitialState());
+
   void _authStateChanged(AuthUser? user) =>
       user == null ? emit(AuthSignedOut()) : emit(AuthSignedIn(user));
 
@@ -23,6 +25,15 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> signInWithGoogle() =>
       _signIn(_authRepository.signInWithGoogle());
+
+  Future<void> signInWithFacebook() =>
+      _signIn(_authRepository.signInWithFacebook());
+
+  Future<void> createUserWithEmailAndPassword(String email, String password) =>
+      _signIn(_authRepository.createUserWithEmailAndPassword(email, password));
+
+  Future<void> signInUserWithEmailAndPassword(String email, String password) =>
+      _signIn(_authRepository.signInWithEmailAndPassword(email, password));
 
   Future<void> _signIn(Future<AuthUser?> auxUser) async {
     try {
